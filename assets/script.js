@@ -40,18 +40,20 @@ $('.btn').on('click', function (event) {
             var lon = data.coord.lon;
             console.log(lat);
             console.log(lon);
+
             httpRequest2 = new XMLHttpRequest();
             if (!httpRequest2) {
                 alert('Giving up :( Cannot create an XMLHTTP instance');
                     return;
             }
 
-            httpRequest2.open('GET', `https://http://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`, true);
+            httpRequest2.open('GET', `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=alerts&appid=${apiKey}`, true);
             httpRequest2.send();
 
-            if (httpRequest.status === 200) {
+            if (httpRequest2.status === 200) {
+                console.log(httpRequest2.responseText);
                 data2 = httpRequest2.responseText;
-                console.log(data2);
+            
 
 
             } else {
