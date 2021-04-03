@@ -38,14 +38,15 @@ $('.btn').on('click', function (event) {
 
             var lat = data.coord.lat;
             var lon = data.coord.lon;
-
+            console.log(lat);
+            console.log(lon);
             httpRequest2 = new XMLHttpRequest();
             if (!httpRequest2) {
                 alert('Giving up :( Cannot create an XMLHTTP instance');
                     return;
             }
 
-            httpRequest2.open('GET', `https://http://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`, true);
+            httpRequest2.open('GET', `https://http://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`, true);
             httpRequest2.send();
 
             if (httpRequest.status === 200) {
