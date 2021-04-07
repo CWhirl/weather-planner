@@ -2,10 +2,15 @@ var apiKey = "ae9965790c629f76714e5b5f971e8578";
 var userIn = $("#username").val();
 var data;
 
+if(localStorage.getItem)
+
 $('.btn').on('click', function (event) {
     event.preventDefault();
     userIn = $("#username").val();
     httpRequest = new XMLHttpRequest();
+
+
+    localStorage.setItem("lastSearch", userIn);
 
     if (!httpRequest) {
     alert('Giving up :( Cannot create an XMLHTTP instance');
@@ -19,7 +24,6 @@ $('.btn').on('click', function (event) {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
 
             if (httpRequest.status === 200) {
-            console.log(JSON.parse(httpRequest.responseText));
             data = JSON.parse(httpRequest.responseText);
             $(`<p>Temperature:${data.main.temp} °F</p>`).appendTo($('#currentDay'));
             $(`<p>Humidity:${data.main.humidity}%</p>`).appendTo($('#currentDay'));
@@ -37,36 +41,41 @@ $('.btn').on('click', function (event) {
                 // high
             }
 
-            httpRequest2 = new XMLHttpRequest();
-            if (!httpRequest2) {
+            httpsRequest2 = new XMLHttpRequest();
+            if (!httpsRequest2) {
                 alert('Giving up :( Cannot create an XMLHTTP instance');
                     return;
             }
             
-            httpRequest2.open('GET', `https://api.openweathermap.org/data/2.5/forecast?q=${userIn}&appid=${apiKey}`, true);
-            httpRequest2.send();
+            httpsRequest2.open('GET', `https://api.openweathermap.org/data/2.5/forecast?q=${userIn}&appid=${apiKey}&cnt=5&units=imperial`, true);
+            httpsRequest2.send();
 
-            if (httpRequest2.status === 200) {
-                console.log(httpRequest2.responseText);
-                data2 = httpRequest2.responseText;
-
-                var dayArray5 = [];
-                // for (const Index in dayArray5) {
-                //     //date
-                //     $(`<p>${}</p>`).appendTo($('#currentDay'));
-                //     //icon
-                //     $(`<p>${}</p>`).appendTo($('#currentDay'));
-                //     //temp
-                //     $(`<p>Temp:${}</p>`).appendTo($('#currentDay'));
-                //     //humidity
-                //     $(`<p>Humidity:${}</p>`).appendTo($('#currentDay'));
-                // }
-            
-
-
-            } else {
-                console.log('There was a problem with the second request.');
+            httpsRequest2.onreadystatechange = function(){
+                if (httpsRequest2.readyState === XMLHttpRequest.DONE) {
+                    if (httpsRequest2.status === 200) {
+                        console.log(JSON.parse(httpsRequest2.responseText));
+                        data2 = JSON.parse(httpsRequest2.responseText);
+        
+                        for (const index in data2.list) {
+                            //date
+                            $(`<p>${data2.list[index].dt_txt}</p>`).appendTo($('#currentDay'));
+                            //icon
+                            $(`<p>${data2.list[index].weather[0].icon}</p>`).appendTo($('#currentDay'));
+                            //temp
+                            $(`<p>Temp:${data2.list[index].main.temp}</p>`).appendTo($('#currentDay'));
+                            //humidity
+                            $(`<p>Humidity:${data2.list[index].main.humidity}</p>`).appendTo($('#currentDay'));
+                        }
+                    
+        
+        
+                    } else {
+                        console.log('There was a problem with the second request.');
+                    }
+                }
             }
+
+            
 
 
             } else {
@@ -74,6 +83,7 @@ $('.btn').on('click', function (event) {
             return;
             }
         }
+
     };
 
     
