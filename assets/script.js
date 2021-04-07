@@ -24,6 +24,7 @@ $('.btn').on('click', function (event) {
             $(`<p>Temperature:${data.main.temp} °F</p>`).appendTo($('#currentDay'));
             $(`<p>Humidity:${data.main.humidity}%</p>`).appendTo($('#currentDay'));
             $(`<p>Wind Speed:${data.wind.speed}MPH</p>`).appendTo($('#currentDay'));
+            $(`<p>${data.weather[0].icon}</p>`).appendTo($('#currentDay'));
             $(`<div>id="uvIndex</div>`).appendTo($('#currentDay'));
             var uv = "";
             $(`<p>UV Index:</p>`).appendTo($('#uvIndex'));
@@ -36,23 +37,30 @@ $('.btn').on('click', function (event) {
                 // high
             }
 
-            var lat = data.coord.lat;
-            var lon = data.coord.lon;
-            console.log(lat);
-            console.log(lon);
-
             httpRequest2 = new XMLHttpRequest();
             if (!httpRequest2) {
                 alert('Giving up :( Cannot create an XMLHTTP instance');
                     return;
             }
-
-            httpRequest2.open('GET', `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=alerts&appid=${apiKey}`, true);
+            
+            httpRequest2.open('GET', `https://api.openweathermap.org/data/2.5/forecast?q=${userIn}&appid=${apiKey}`, true);
             httpRequest2.send();
 
             if (httpRequest2.status === 200) {
                 console.log(httpRequest2.responseText);
                 data2 = httpRequest2.responseText;
+
+                var dayArray5 = [];
+                // for (const Index in dayArray5) {
+                //     //date
+                //     $(`<p>${}</p>`).appendTo($('#currentDay'));
+                //     //icon
+                //     $(`<p>${}</p>`).appendTo($('#currentDay'));
+                //     //temp
+                //     $(`<p>Temp:${}</p>`).appendTo($('#currentDay'));
+                //     //humidity
+                //     $(`<p>Humidity:${}</p>`).appendTo($('#currentDay'));
+                // }
             
 
 
