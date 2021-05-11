@@ -25,21 +25,10 @@ $('.btn').on('click', function (event) {
 
             if (httpRequest.status === 200) {
             data = JSON.parse(httpRequest.responseText);
-            $(`<p>Temperature:${data.main.temp} °F</p>`).appendTo($('#currentDay'));
-            $(`<p>Humidity:${data.main.humidity}%</p>`).appendTo($('#currentDay'));
-            $(`<p>Wind Speed:${data.wind.speed}MPH</p>`).appendTo($('#currentDay'));
-            $(`<p>${data.weather[0].icon}</p>`).appendTo($('#currentDay'));
-            $(`<div>id="uvIndex</div>`).appendTo($('#currentDay'));
-            var uv = "";
-            $(`<p>UV Index:</p>`).appendTo($('#uvIndex'));
-            $(`<p>${uv}</p>`).appendTo($('#uvIndex'));
-            if (uv <= 3) {
-                //low
-            } else if (uv <= 5) {
-                // moderate
-            } else {
-                // high
-            }
+            $(`<p>Temperature:${data.main.temp} °F</p>`).appendTo($('#repo-search-term'));
+            $(`<p>Humidity:${data.main.humidity}%</p>`).appendTo($('#repo-search-term'));
+            $(`<p>Wind Speed:${data.wind.speed}MPH</p>`).appendTo($('#repo-search-term'));
+            $(`<img id="wicon" src="http://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="Weather icon">`).appendTo($('#repo-search-term'));
 
             httpsRequest2 = new XMLHttpRequest();
             if (!httpsRequest2) {
@@ -57,14 +46,14 @@ $('.btn').on('click', function (event) {
                         data2 = JSON.parse(httpsRequest2.responseText);
         
                         for (const index in data2.list) {
-                            //date
-                            $(`<p>${data2.list[index].dt_txt}</p>`).appendTo($('#currentDay'));
-                            //icon
-                            $(`<p>${data2.list[index].weather[0].icon}</p>`).appendTo($('#currentDay'));
-                            //temp
-                            $(`<p>Temp:${data2.list[index].main.temp}</p>`).appendTo($('#currentDay'));
-                            //humidity
-                            $(`<p>Humidity:${data2.list[index].main.humidity}</p>`).appendTo($('#currentDay'));
+
+                            $(`<tr>
+                            <th scope="row">${data2.list[index].dt_txt}</th>
+                            <td>${data2.list[index].main.humidity}%</td>
+                            <td>${data2.list[index].main.temp}°F</td>
+                            <td><img id="wicon" src="http://openweathermap.org/img/w/${data2.list[index].weather[0].icon}.png" alt="Weather icon"></td>
+                          </tr>`).appendTo($('#tbody'));
+
                         }
                     
         
@@ -83,11 +72,5 @@ $('.btn').on('click', function (event) {
             return;
             }
         }
-
     };
-
-    
-
-
-
 });
